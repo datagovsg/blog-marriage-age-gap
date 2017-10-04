@@ -1,0 +1,14 @@
+{
+  "name": "blog-age-difference",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "exit 0"
+  },
+  "author": "Yong Jun",
+  "license": "MIT",
+  "standard": {
+    "globals": ["Papa", "DatagovsgCharts", "PivotTable"]
+  }
+}
