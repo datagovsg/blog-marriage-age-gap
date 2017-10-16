@@ -5850,7 +5850,7 @@ var DatagovsgLine = function (_MultipleLine) {
 function postprocess(primaryAxis, secondaryAxis) {
   var props = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-  primaryAxis.margin(12).innerTickLength(5).endTickLength(0).tickLabelPadding(5);
+  primaryAxis.margin(12).innerTickLength(5).endTickLength(5).tickLabelPadding(5);
   secondaryAxis.margin(12).innerTickLength(0).endTickLength(0).tickLabelPadding(5).showEndTickLabels(true).addClass('hide-baseline').formatter(getCustomNumberFormatter(props.isPercentage));
   // hack to show end tick labels
   secondaryAxis._hideOverflowingTickLabels = function () {

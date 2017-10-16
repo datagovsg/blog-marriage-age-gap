@@ -9,6 +9,6 @@
   "author": "Yong Jun",
   "license": "MIT",
   "standard": {
-    "globals": ["Papa", "DatagovsgCharts", "PivotTable"]
+    "globals": ["Papa", "d3", "Plottable", "DatagovsgCharts", "PivotTable"]
   }
 }

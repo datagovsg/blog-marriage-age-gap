@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Groom/Bride Age Difference</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Marriage Age Gap</title>
     <link rel="stylesheet" href="lib/plottable.css">
     <link rel="stylesheet" href="lib/datagovsg-charts.css">
     <style>
@@ -10,16 +11,19 @@
         font-family: sans-serif;
         margin: 0;
         padding: 0;
+        height: 100%;
         text-align: center;
       }
 
-      .chart-title {
-        margin-top: 50px;
+      .section {
+        margin-top: 20px;
+        margin-bottom: 40px;
       }
 
       .chart-container {
         margin: 30px auto 50px;
-        max-width: 800px;
+        width: 800px;
+        max-width: 90%;
         height: 500px;
       }
 
@@ -30,154 +34,58 @@
       input[name="year"] {
         width: 200px;
       }
+
+      @media (max-width: 600px) {
+        .chart-container {
+          height: 350px;
+        }
+      }
+
+      #age-group .chart-container {
+        height: auto;
+        width: 600px;
+        box-sizing: border-box;
+      }
+
+      #age-group #chart {
+        height: 200px;
+      }
     </style>
   </head>
   <body>
-    <h2 class="chart-title">Groom vs Bride Age Difference (<span class="year-text">1994</span>)</h2>
-    <div class="chart-container">
-      <svg id="chart" height="100%" width="100%"></svg>
-    </div>
-    <div class="chart-controls">
-      <!-- <label for="type">Type:</label>
-      <input type="button" name="type" id="type" value="First Marriages">
-      <br> -->
-      <label for="year">Year:</label>
-      <input type="range" name="year" min="1994" max="2015" step="1" value="1994" id="year">
-      <input type="button" name="play" value="Pause" id="year">
-    </div>
+    <section id="age-difference">
+      <h2 class="chart-title">Groom vs Bride Age Difference (<span class="year-text">1994</span>)</h2>
+      <div class="chart-container">
+        <svg id="chart" height="100%" width="100%"></svg>
+      </div>
+      <div class="chart-controls">
+        <label>Year:</label>
+        <input type="range" name="year" min="1994" max="2015" step="1" value="1994">
+        <input type="button" name="play" value="Pause">
+      </div>
+    </section>
+
+    <section id="age-group">
+      <h2 class="chart-title">No. of Marriages at Each Age Group</h2>
+      <div class="chart-container">
+        <svg id="chart" class="panel-0" height="100%" width="100%"></svg>
+        <svg id="chart" class="panel-1" height="100%" width="100%"></svg>
+        <svg id="chart" class="panel-2" height="100%" width="100%"></svg>
+      </div>
+    </section>
+
+    <section id="income">
+      <h2 class="chart-title">Median Gross Monthly Income From Work</h2>
+      <div class="chart-container">
+        <svg id="chart" height="100%" width="100%"></svg>
+      </div>
+    </section>
 
     <script src="lib/d3.min.js"></script>
     <script src="lib/plottable.min.js"></script>
     <script src="lib/datagovsg-charts.js"></script>
     <script src="lib/pivot-table.min.js"></script>
-    <script src="lib/papaparse.min.js">
-    </script>
-    <script type="text/javascript">
-      const {DatagovsgGroupedBar} = DatagovsgCharts
-      const getScale = DatagovsgCharts.helpers.getScale
-      const {filterItems, filterGroups, groupItems, aggregate} = PivotTable
-
-      const ageDifference = {
-        'Groom Younger By 4 Years': -4,
-        'Groom Younger By 3 Years': -3,
-        'Groom Younger By 2 Years': -2,
-        'Groom Younger By 1 Year': -1,
-        'Same Age': 0,
-        'Groom Older By 1 Year': 1,
-        'Groom Older By 2 Years': 2,
-        'Groom Older By 3 Years': 3,
-        'Groom Older By 4 Years': 4,
-        'Groom Older By 5 Years': 5,
-        'Groom Older By 6 Years': 6,
-        'Groom Older By 7 Years': 7,
-        'Groom Older By 8 Years': 8,
-        'Groom Older By 9 Years': 9,
-        'Groom Older By 10 Years': 10,
-        'Groom Older By 11 Years': 11,
-        'Groom Older By 12 Years': 12
-      }
-
-      Papa.parse('data.csv', {
-        download: true,
-        header: true,
-        complete (results) {
-          results.data.forEach(d => {
-            d.ageDifference = ageDifference[d.level_2]
-          })
-
-          const pivotTable = new PivotTable(results.data)
-          pivotTable.push(groupItems('year'))
-          pivotTable.push(groupItems('level_1'))
-          pivotTable.push(filterGroups('level_1', {type: 'exclude', values: ['Total']}))
-          pivotTable.push(aggregate('year', 'value'))
-          pivotTable.push(filterItems(d => !isNaN(d.ageDifference)))
-          pivotTable.push(aggregate('ageDifference', 'value'))
-
-          const processed = pivotTable.transform()
-
-          processed.forEach(g => {
-            g._summaries[1].series.sort((a, b) => a.label - b.label)
-            g._summaries[1].series.forEach(d => {
-              d.value = d.value / g._summaries[0].series[0].value * 100
-            })
-          })
-
-          const scale = getScale().domain([0, 18])
-          const chart = new DatagovsgGroupedBar({
-            scale: scale,
-            xLabel: 'Years Difference in Age',
-            yLabel: '% Couples',
-            isPercentage: true,
-            animated: false
-          })
-          chart.mount(document.getElementById('chart'))
-          window.chart = chart
-
-          function updateChart (year, type) {
-            const matches = processed.filter(g => g._group.year === year)
-            if (matches) {
-              const data = matches.map(g => ({
-                label: g._group.level_1,
-                series: g._summaries[1].series
-              }))
-              chart.update({data})
-            }
-          }
-
-          // const typeControl = document.querySelector('input[name="type"]')
-          const yearControl = document.querySelector('input[name="year"]')
-          const yearText = document.querySelector('.year-text')
-
-          // typeControl.addEventListener('click', event => {
-          //   if (typeControl.value === 'First Marriages') {
-          //     typeControl.value = 'Remarriages'
-          //     scale.domain([0, 8])
-          //   } else {
-          //     typeControl.value = 'First Marriages'
-          //     scale.domain([0, 18])
-          //   }
-          //   updateChart(yearControl.value, typeControl.value)
-          // })
-          yearControl.addEventListener('change', event => {
-            updateChart(yearControl.value)
-            yearText.textContent = yearControl.value
-          })
-
-          const playControl = document.querySelector('input[name="play"]')
-
-          let timeoutId, intervalId
-
-          playControl.addEventListener('click', event => {
-            if (playControl.value === 'Play') {
-              playControl.value = 'Pause'
-              initializeTimeLapse()
-            } else {
-              playControl.value = 'Play'
-              clearTimeout(timeoutId)
-              clearInterval(intervalId)
-            }
-          })
-
-          function initializeTimeLapse () {
-            yearControl.value = '1994'
-            updateChart(yearControl.value)
-            yearText.textContent = yearControl.value
-            intervalId = setInterval(() => {
-              const current = +yearControl.value
-              if (current < 2015) {
-                yearControl.value = (current + 1).toString()
-                updateChart(yearControl.value)
-                yearText.textContent = yearControl.value
-              } else {
-                clearInterval(intervalId)
-                timeoutId = setTimeout(initializeTimeLapse, 2000)
-              }
-            }, 700)
-          }
-
-          initializeTimeLapse()
-        }
-      })
-    </script>
+    <script src="lib/papaparse.min.js"></script>
+    <script src="bundle.js"></script>
   </body>
 </html>
