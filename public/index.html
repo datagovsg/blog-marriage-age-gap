@@ -11,13 +11,12 @@
         font-family: sans-serif;
         margin: 0;
         padding: 0;
-        height: 100%;
         text-align: center;
       }
 
-      .section {
-        margin-top: 20px;
-        margin-bottom: 40px;
+      section {
+        margin-top: 40px;
+        margin-bottom: 80px;
       }
 
       .chart-container {
@@ -47,8 +46,12 @@
         box-sizing: border-box;
       }
 
-      #age-group #chart {
+      #age-group .chart {
         height: 200px;
+      }
+
+      #age-group .y-axis line {
+        display: none;
       }
     </style>
   </head>
@@ -56,7 +59,7 @@
     <section id="age-difference">
       <h2 class="chart-title">Groom vs Bride Age Difference (<span class="year-text">1994</span>)</h2>
       <div class="chart-container">
-        <svg id="chart" height="100%" width="100%"></svg>
+        <svg class="chart" height="100%" width="100%"></svg>
       </div>
       <div class="chart-controls">
         <label>Year:</label>
@@ -66,18 +69,18 @@
     </section>
 
     <section id="age-group">
-      <h2 class="chart-title">No. of Marriages at Each Age Group</h2>
+      <h2 class="chart-title">No. of Marriages by Age Group</h2>
       <div class="chart-container">
-        <svg id="chart" class="panel-0" height="100%" width="100%"></svg>
-        <svg id="chart" class="panel-1" height="100%" width="100%"></svg>
-        <svg id="chart" class="panel-2" height="100%" width="100%"></svg>
+        <svg class="chart panel-0" height="100%" width="100%"></svg>
+        <svg class="chart panel-1" height="100%" width="100%"></svg>
+        <svg class="chart panel-2" height="100%" width="100%"></svg>
       </div>
     </section>
 
     <section id="income">
       <h2 class="chart-title">Median Gross Monthly Income From Work</h2>
       <div class="chart-container">
-        <svg id="chart" height="100%" width="100%"></svg>
+        <svg class="chart" height="100%" width="100%"></svg>
       </div>
     </section>
 

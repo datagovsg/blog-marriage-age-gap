@@ -1,0 +1,146 @@
+[
+	{
+		"year": 2015,
+		"bride": "Brides Aged 20-24 Years",
+		"groom": "Grooms Aged Under 20 Years",
+		"count": 11
+	},
+	{
+		"year": 2015,
+		"bride": "Brides Aged 20-24 Years",
+		"groom": "Grooms Aged 20-24 Years",
+		"count": 545
+	},
+	{
+		"year": 2015,
+		"bride": "Brides Aged 20-24 Years",
+		"groom": "Grooms Aged 25-29 Years",
+		"count": 1095
+	},
+	{
+		"year": 2015,
+		"bride": "Brides Aged 20-24 Years",
+		"groom": "Grooms Aged 30-34 Years",
+		"count": 414
+	},
+	{
+		"year": 2015,
+		"bride": "Brides Aged 25-29 Years",
+		"groom": "Grooms Aged 20-24 Years",
+		"count": 274
+	},
+	{
+		"year": 2015,
+		"bride": "Brides Aged 25-29 Years",
+		"groom": "Grooms Aged 25-29 Years",
+		"count": 5232
+	},
+	{
+		"year": 2015,
+		"bride": "Brides Aged 25-29 Years",
+		"groom": "Grooms Aged 30-34 Years",
+		"count": 3494
+	},
+	{
+		"year": 2015,
+		"bride": "Brides Aged 25-29 Years",
+		"groom": "Grooms Aged 35-39 Years",
+		"count": 764
+	},
+	{
+		"year": 2015,
+		"bride": "Brides Aged 30-34 Years",
+		"groom": "Grooms Aged 25-29 Years",
+		"count": 701
+	},
+	{
+		"year": 2015,
+		"bride": "Brides Aged 30-34 Years",
+		"groom": "Grooms Aged 30-34 Years",
+		"count": 2854
+	},
+	{
+		"year": 2015,
+		"bride": "Brides Aged 30-34 Years",
+		"groom": "Grooms Aged 35-39 Years",
+		"count": 1350
+	},
+	{
+		"year": 2015,
+		"bride": "Brides Aged 30-34 Years",
+		"groom": "Grooms Aged 40-44 Years",
+		"count": 544
+	},
+	{
+		"year": 1998,
+		"bride": "Brides Aged 20-24 Years",
+		"groom": "Grooms Aged Under 20 Years",
+		"count": 14
+	},
+	{
+		"year": 1998,
+		"bride": "Brides Aged 20-24 Years",
+		"groom": "Grooms Aged 20-24 Years",
+		"count": 1535
+	},
+	{
+		"year": 1998,
+		"bride": "Brides Aged 20-24 Years",
+		"groom": "Grooms Aged 25-29 Years",
+		"count": 2986
+	},
+	{
+		"year": 1998,
+		"bride": "Brides Aged 20-24 Years",
+		"groom": "Grooms Aged 30-34 Years",
+		"count": 902
+	},
+	{
+		"year": 1998,
+		"bride": "Brides Aged 25-29 Years",
+		"groom": "Grooms Aged 20-24 Years",
+		"count": 424
+	},
+	{
+		"year": 1998,
+		"bride": "Brides Aged 25-29 Years",
+		"groom": "Grooms Aged 25-29 Years",
+		"count": 4609
+	},
+	{
+		"year": 1998,
+		"bride": "Brides Aged 25-29 Years",
+		"groom": "Grooms Aged 30-34 Years",
+		"count": 2257
+	},
+	{
+		"year": 1998,
+		"bride": "Brides Aged 25-29 Years",
+		"groom": "Grooms Aged 35-39 Years",
+		"count": 703
+	},
+	{
+		"year": 1998,
+		"bride": "Brides Aged 30-34 Years",
+		"groom": "Grooms Aged 25-29 Years",
+		"count": 461
+	},
+	{
+		"year": 1998,
+		"bride": "Brides Aged 30-34 Years",
+		"groom": "Grooms Aged 30-34 Years",
+		"count": 1015
+	},
+	{
+		"year": 1998,
+		"bride": "Brides Aged 30-34 Years",
+		"groom": "Grooms Aged 35-39 Years",
+		"count": 688
+	},
+	{
+		"year": 1998,
+		"bride": "Brides Aged 30-34 Years",
+		"groom": "Grooms Aged 40-44 Years",
+		"count": 255
+	}
+]

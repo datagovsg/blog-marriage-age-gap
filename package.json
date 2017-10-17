@@ -4,11 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "cp node_modules/datagovsg-plottable-charts/lib/* public/lib/",
     "test": "exit 0"
   },
   "author": "Yong Jun",
   "license": "MIT",
+  "dependencies": {
+    "datagovsg-plottable-charts": "^3.4.2"
+  },
   "standard": {
-    "globals": ["Papa", "d3", "Plottable", "DatagovsgCharts", "PivotTable"]
+    "globals": [
+      "Papa",
+      "d3",
+      "Plottable",
+      "DatagovsgCharts",
+      "PivotTable"
+    ]
   }
 }
