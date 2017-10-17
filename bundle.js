@@ -2,8 +2,10 @@ const {
   DatagovsgGroupedBar,
   DatagovsgHorizontalBar,
   DatagovsgLine,
+  plugins: chartPlugins,
   helpers: chartHelpers
 } = DatagovsgCharts
+const {highlightOnHover} = chartPlugins
 const {getScale, getColorScale} = chartHelpers
 const {filterItems, filterGroups, groupItems, aggregate} = PivotTable
 
@@ -63,66 +65,18 @@ const incomeData = [
 
 plotIncome(incomeData)
 
-const ageGroupData = [{
-  bride: 'Brides Aged 20-24 Years',
-  groom: 'Grooms Aged Under 20 Years',
-  count: 11
-}, {
-  bride: 'Brides Aged 20-24 Years',
-  groom: 'Grooms Aged 20-24 Years',
-  count: 545
-}, {
-  bride: 'Brides Aged 20-24 Years',
-  groom: 'Grooms Aged 25-29 Years',
-  count: 1095
-}, {
-  bride: 'Brides Aged 20-24 Years',
-  groom: 'Grooms Aged 30-34 Years',
-  count: 414
-}, {
-  bride: 'Brides Aged 25-29 Years',
-  groom: 'Grooms Aged 20-24 Years',
-  count: 274
-}, {
-  bride: 'Brides Aged 25-29 Years',
-  groom: 'Grooms Aged 25-29 Years',
-  count: 5232
-}, {
-  bride: 'Brides Aged 25-29 Years',
-  groom: 'Grooms Aged 30-34 Years',
-  count: 3494
-}, {
-  bride: 'Brides Aged 25-29 Years',
-  groom: 'Grooms Aged 35-39 Years',
-  count: 764
-}, {
-  bride: 'Brides Aged 30-34 Years',
-  groom: 'Grooms Aged 25-29 Years',
-  count: 701
-}, {
-  bride: 'Brides Aged 30-34 Years',
-  groom: 'Grooms Aged 30-34 Years',
-  count: 2854
-}, {
-  bride: 'Brides Aged 30-34 Years',
-  groom: 'Grooms Aged 35-39 Years',
-  count: 1350
-}, {
-  bride: 'Brides Aged 30-34 Years',
-  groom: 'Grooms Aged 40-44 Years',
-  count: 544
-}]
-
-plotAgeGroup(ageGroupData)
+window.fetch('data.json').then(res => res.json()).then(plotAgeGroup)
 
 function plotAgeDifference (data) {
   const pivotTable = new PivotTable(data)
-  pivotTable.push(groupItems('year'))
-  pivotTable.push(groupItems('level_1'))
-  pivotTable.push(filterGroups('level_1', {type: 'exclude', values: ['Total']}))
-  pivotTable.push(aggregate('year', 'value'))
-  pivotTable.push(filterItems(d => !isNaN(d.ageDifference)))
-  pivotTable.push(aggregate('ageDifference', 'value'))
+  pivotTable.push(
+    groupItems('year'),
+    groupItems('level_1'),
+    filterGroups('level_1', {type: 'exclude', values: ['Total']}),
+    aggregate('year', 'value'),
+    filterItems(d => !isNaN(d.ageDifference)),
+    aggregate('ageDifference', 'value')
+  )
 
   const processed = pivotTable.transform()
 
@@ -142,7 +96,7 @@ function plotAgeDifference (data) {
     legendPosition: 'b',
     animated: false
   })
-  chart.mount(document.querySelector('#age-difference #chart'))
+  chart.mount(document.querySelector('#age-difference .chart'))
 
   function updateChart (year, type) {
     const matches = processed.filter(g => g._group.year === year)
@@ -216,32 +170,56 @@ function plotIncome (data) {
     xLabel: 'Age',
     yLabel: 'Median income',
     colorScale: getColorScale().range(d3.scale.category10().range()),
+    markerSize: 6,
     legendPosition: 'b'
   })
+  highlightOnHover(chart)
   chart.yAxis.formatter(Plottable.Formatters.currency(0, '$'))
-  chart.mount(document.querySelector('#income #chart'))
+  chart.mount(document.querySelector('#income .chart'))
 }
 
 function plotAgeGroup (data) {
   const pivotTable = new PivotTable(data)
-  pivotTable.push(groupItems('bride'))
-  pivotTable.push(aggregate('groom', 'count'))
+  pivotTable.push(
+    groupItems('year'),
+    groupItems('bride'),
+    aggregate('groom', 'count')
+  )
 
   const processed = pivotTable.transform()
 
-  const colorRange = ['lightgrey', 'grey', 'lightgrey', 'lightgrey']
+  const colorRange = ['#FF7733', '#C64D26', '#FF7733', '#FF7733']
 
-  processed.forEach((g, i) => {
-    const yLabel = g._group.bride
+  processed.filter(g => g._group.year === '2015').forEach((g, i) => {
     const data = g._summaries[0].series
+    const yLabel = g._group.bride
+    const data1998 = processed.filter(
+      g => g._group.year === '1998' && g._group.bride === yLabel
+    )[0]._summaries[0].series
 
     const chart = new DatagovsgHorizontalBar({
       data,
       yLabel,
+      xLabel: '2015',
       colorScale: getColorScale().range(colorRange),
       sorted: false
     })
-    chart.yAxis.margin(30)
-    chart.mount(document.querySelector('#age-group #chart.panel-' + i))
+
+    const chart1998 = new DatagovsgHorizontalBar({
+      data: data1998,
+      yLabel,
+      xLabel: '1998',
+      colorScale: getColorScale().range(colorRange),
+      sorted: false
+    })
+
+    chart.xAxis.showEndTickLabels(false)
+    chart1998.xAxis.showEndTickLabels(false)
+    chart.layout.add(chart1998.layout.componentAt(0, 2), 0, 3)
+    chart.layout.add(chart1998.layout.componentAt(1, 2), 1, 3)
+    chart.layout.add(chart1998.layout.componentAt(2, 2), 2, 3)
+    chart.layout.columnPadding(15)
+
+    chart.mount(document.querySelector('#age-group .chart.panel-' + i))
   })
 }
