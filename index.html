@@ -31,7 +31,7 @@
       }
 
       input[name="year"] {
-        width: 200px;
+        width: 300px;
       }
 
       @media (max-width: 600px) {
@@ -53,23 +53,43 @@
       #age-group .y-axis line {
         display: none;
       }
+
+      #age-group .y-axis .tick-label:nth-child(2) text {
+        font-weight: 500;
+        fill: black;
+      }
+
+      #age-group .axis-label text {
+        font-weight: 700;
+        fill: black;
+      }
     </style>
   </head>
   <body>
     <section id="age-difference">
-      <h2 class="chart-title">Groom vs Bride Age Difference (<span class="year-text">1994</span>)</h2>
+      <h2 class="chart-title">Groom vs Bride Age Difference (<span class="year-text">1985</span>)</h2>
       <div class="chart-container">
         <svg class="chart" height="100%" width="100%"></svg>
       </div>
       <div class="chart-controls">
         <label>Year:</label>
-        <input type="range" name="year" min="1994" max="2015" step="1" value="1994">
+        <input type="range" name="year" min="1985" max="2015" step="1" value="1985">
         <input type="button" name="play" value="Pause">
       </div>
     </section>
 
+    <section>
+      <h2 class="chart-title">Number of Marriages by Bride's Age Group</h2>
+      <iframe width="800" height="500" src="https://data.gov.sg/dataset/marriages-under-the-women-s-charter-by-age-group-of-brides-annual/resource/7fdff042-86ed-4e87-a0b8-f133e2d3e098/view/941b8e47-ed9c-4b1e-a00a-4b158622189b" frameBorder="0"> </iframe>
+    </section>
+
+    <section>
+      <h2 class="chart-title">Number of Marriage by Brides's Education Attainment</h2>
+      <iframe width="800" height="500" src="https://data.gov.sg/dataset/marriages-under-the-women-s-charter-by-educational-qualification-of-brides-and-grooms-annual/resource/01b30965-fd49-41d5-9354-3085350ff6a6/view/4a72d292-a977-4d9e-8c19-0c7ac0066013" frameBorder="0"> </iframe>
+    </section>
+
     <section id="age-group">
-      <h2 class="chart-title">No. of Marriages by Age Group</h2>
+      <h2 class="chart-title">No. of Marriages by Age Group of Brides and Grooms</h2>
       <div class="chart-container">
         <svg class="chart panel-0" height="100%" width="100%"></svg>
         <svg class="chart panel-1" height="100%" width="100%"></svg>
@@ -78,7 +98,7 @@
     </section>
 
     <section id="income">
-      <h2 class="chart-title">Median Gross Monthly Income From Work</h2>
+      <h2 class="chart-title">Median Gross Monthly Income From Work 2016</h2>
       <div class="chart-container">
         <svg class="chart" height="100%" width="100%"></svg>
       </div>

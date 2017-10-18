@@ -29,7 +29,7 @@ const ageDifference = {
   'Groom Older By 12 Years': 12
 }
 
-Papa.parse('data.csv', {
+Papa.parse('age-differential.csv', {
   download: true,
   header: true,
   complete (results) {
@@ -65,7 +65,32 @@ const incomeData = [
 
 plotIncome(incomeData)
 
-window.fetch('data.json').then(res => res.json()).then(plotAgeGroup)
+const ageGroup = [
+  {'bride': 'Brides Aged 20-24 Years', 'groom': 'Grooms Aged Under 20 Years'},
+  {'bride': 'Brides Aged 20-24 Years', 'groom': 'Grooms Aged 20-24 Years'},
+  {'bride': 'Brides Aged 20-24 Years', 'groom': 'Grooms Aged 25-29 Years'},
+  {'bride': 'Brides Aged 20-24 Years', 'groom': 'Grooms Aged 30-34 Years'},
+  {'bride': 'Brides Aged 25-29 Years', 'groom': 'Grooms Aged 20-24 Years'},
+  {'bride': 'Brides Aged 25-29 Years', 'groom': 'Grooms Aged 25-29 Years'},
+  {'bride': 'Brides Aged 25-29 Years', 'groom': 'Grooms Aged 30-34 Years'},
+  {'bride': 'Brides Aged 25-29 Years', 'groom': 'Grooms Aged 35-39 Years'},
+  {'bride': 'Brides Aged 30-34 Years', 'groom': 'Grooms Aged 25-29 Years'},
+  {'bride': 'Brides Aged 30-34 Years', 'groom': 'Grooms Aged 30-34 Years'},
+  {'bride': 'Brides Aged 30-34 Years', 'groom': 'Grooms Aged 35-39 Years'},
+  {'bride': 'Brides Aged 30-34 Years', 'groom': 'Grooms Aged 40-44 Years'}
+]
+
+Papa.parse('by-age-group.csv', {
+  download: true,
+  header: true,
+  complete (results) {
+    const filtered = results.data.filter(d => {
+      return (d.year === '1985' || d.year === '2015') &&
+        ageGroup.filter(row => row.bride === d.level_1 && row.groom === d.level_2).length > 0
+    })
+    plotAgeGroup(filtered)
+  }
+})
 
 function plotAgeDifference (data) {
   const pivotTable = new PivotTable(data)
@@ -109,7 +134,7 @@ function plotAgeDifference (data) {
     }
   }
 
-  // const typeControl = document.querySelector('input[name="type"]')
+  // const typeControl = document.querySelector('input[name='type']')
   const yearControl = document.querySelector('input[name="year"]')
   const yearText = document.querySelector('.year-text')
 
@@ -134,7 +159,7 @@ function plotAgeDifference (data) {
   })
 
   function initializeTimeLapse () {
-    yearControl.value = '1994'
+    yearControl.value = '1985'
     updateChart(yearControl.value)
     yearText.textContent = yearControl.value
     intervalId = setInterval(() => {
@@ -182,42 +207,38 @@ function plotAgeGroup (data) {
   const pivotTable = new PivotTable(data)
   pivotTable.push(
     groupItems('year'),
-    groupItems('bride'),
-    aggregate('groom', 'count')
+    groupItems('level_1'),
+    aggregate('level_2', 'value')
   )
 
   const processed = pivotTable.transform()
 
-  const colorRange = ['#FF7733', '#C64D26', '#FF7733', '#FF7733']
-
-  processed.filter(g => g._group.year === '2015').forEach((g, i) => {
+  processed.filter(g => g._group.year === '1985').forEach((g, i) => {
     const data = g._summaries[0].series
-    const yLabel = g._group.bride
-    const data1998 = processed.filter(
-      g => g._group.year === '1998' && g._group.bride === yLabel
+    const yLabel = g._group.level_1
+    const data2015 = processed.filter(
+      g => g._group.year === '2015' && g._group.level_1 === yLabel
     )[0]._summaries[0].series
 
     const chart = new DatagovsgHorizontalBar({
       data,
       yLabel,
-      xLabel: '2015',
-      colorScale: getColorScale().range(colorRange),
+      xLabel: '1985',
       sorted: false
     })
 
-    const chart1998 = new DatagovsgHorizontalBar({
-      data: data1998,
+    const chart2015 = new DatagovsgHorizontalBar({
+      data: data2015,
       yLabel,
-      xLabel: '1998',
-      colorScale: getColorScale().range(colorRange),
+      xLabel: '2015',
       sorted: false
     })
 
     chart.xAxis.showEndTickLabels(false)
-    chart1998.xAxis.showEndTickLabels(false)
-    chart.layout.add(chart1998.layout.componentAt(0, 2), 0, 3)
-    chart.layout.add(chart1998.layout.componentAt(1, 2), 1, 3)
-    chart.layout.add(chart1998.layout.componentAt(2, 2), 2, 3)
+    chart2015.xAxis.showEndTickLabels(false)
+    chart.layout.add(chart2015.layout.componentAt(0, 2), 0, 3)
+    chart.layout.add(chart2015.layout.componentAt(1, 2), 1, 3)
+    chart.layout.add(chart2015.layout.componentAt(2, 2), 2, 3)
     chart.layout.columnPadding(15)
 
     chart.mount(document.querySelector('#age-group .chart.panel-' + i))
