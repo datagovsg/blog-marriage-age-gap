@@ -1,12 +1,15 @@
 const {
   DatagovsgGroupedBar,
   DatagovsgHorizontalBar,
-  DatagovsgLine,
-  plugins: chartPlugins,
+  // DatagovsgLine,
+  // plugins: chartPlugins,
   helpers: chartHelpers
 } = DatagovsgCharts
-const {highlightOnHover} = chartPlugins
-const {getScale, getColorScale} = chartHelpers
+// const {highlightOnHover} = chartPlugins
+const {
+  // getColorScale,
+  getScale
+} = chartHelpers
 const {filterItems, filterGroups, groupItems, aggregate} = PivotTable
 
 const ageDifference = {
@@ -40,6 +43,7 @@ Papa.parse('age-differential.csv', {
   }
 })
 
+/*
 const incomeData = [
   {gender: 'Male', age: '15 - 19', median_income: 800},
   {gender: 'Male', age: '20 - 24', median_income: 2000},
@@ -64,8 +68,9 @@ const incomeData = [
 ]
 
 plotIncome(incomeData)
+*/
 
-const ageGroup = [
+const brideFilters = [
   {'bride': 'Brides Aged 20-24 Years', 'groom': 'Grooms Aged Under 20 Years'},
   {'bride': 'Brides Aged 20-24 Years', 'groom': 'Grooms Aged 20-24 Years'},
   {'bride': 'Brides Aged 20-24 Years', 'groom': 'Grooms Aged 25-29 Years'},
@@ -80,15 +85,35 @@ const ageGroup = [
   {'bride': 'Brides Aged 30-34 Years', 'groom': 'Grooms Aged 40-44 Years'}
 ]
 
+const groomFilters = [
+  {'groom': 'Grooms Aged 20-24 Years', 'bride': 'Brides Aged Under 20 Years'},
+  {'groom': 'Grooms Aged 20-24 Years', 'bride': 'Brides Aged 20-24 Years'},
+  {'groom': 'Grooms Aged 20-24 Years', 'bride': 'Brides Aged 25-29 Years'},
+  {'groom': 'Grooms Aged 20-24 Years', 'bride': 'Brides Aged 30-34 Years'},
+  {'groom': 'Grooms Aged 25-29 Years', 'bride': 'Brides Aged 20-24 Years'},
+  {'groom': 'Grooms Aged 25-29 Years', 'bride': 'Brides Aged 25-29 Years'},
+  {'groom': 'Grooms Aged 25-29 Years', 'bride': 'Brides Aged 30-34 Years'},
+  {'groom': 'Grooms Aged 25-29 Years', 'bride': 'Brides Aged 35-39 Years'},
+  {'groom': 'Grooms Aged 30-34 Years', 'bride': 'Brides Aged 25-29 Years'},
+  {'groom': 'Grooms Aged 30-34 Years', 'bride': 'Brides Aged 30-34 Years'},
+  {'groom': 'Grooms Aged 30-34 Years', 'bride': 'Brides Aged 35-39 Years'},
+  {'groom': 'Grooms Aged 30-34 Years', 'bride': 'Brides Aged 40-44 Years'}
+]
+
 Papa.parse('by-age-group.csv', {
   download: true,
   header: true,
   complete (results) {
-    const filtered = results.data.filter(d => {
+    const brideFiltered = results.data.filter(d => {
       return (d.year === '1985' || d.year === '2015') &&
-        ageGroup.filter(row => row.bride === d.level_1 && row.groom === d.level_2).length > 0
+        brideFilters.filter(row => row.bride === d.level_1 && row.groom === d.level_2).length > 0
     })
-    plotAgeGroup(filtered)
+    const groomFiltered = results.data.filter(d => {
+      return (d.year === '1985' || d.year === '2015') &&
+        groomFilters.filter(row => row.bride === d.level_1 && row.groom === d.level_2).length > 0
+    })
+    plotBrideAgeGroup(brideFiltered)
+    plotGroomAgeGroup(groomFiltered)
   }
 })
 
@@ -178,6 +203,7 @@ function plotAgeDifference (data) {
   initializeTimeLapse()
 }
 
+/*
 function plotIncome (data) {
   const pivotTable = new PivotTable(data)
   pivotTable.push(groupItems('gender'))
@@ -202,8 +228,9 @@ function plotIncome (data) {
   chart.yAxis.formatter(Plottable.Formatters.currency(0, '$'))
   chart.mount(document.querySelector('#income .chart'))
 }
+*/
 
-function plotAgeGroup (data) {
+function plotBrideAgeGroup (data) {
   const pivotTable = new PivotTable(data)
   pivotTable.push(
     groupItems('year'),
@@ -241,6 +268,48 @@ function plotAgeGroup (data) {
     chart.layout.add(chart2015.layout.componentAt(2, 2), 2, 3)
     chart.layout.columnPadding(15)
 
-    chart.mount(document.querySelector('#age-group .chart.panel-' + i))
+    chart.mount(document.querySelector('#bride-age-group .chart.panel-' + i))
+  })
+}
+
+function plotGroomAgeGroup (data) {
+  const pivotTable = new PivotTable(data)
+  pivotTable.push(
+    groupItems('year'),
+    groupItems('level_2'),
+    aggregate('level_1', 'value')
+  )
+
+  const processed = pivotTable.transform()
+
+  processed.filter(g => g._group.year === '1985').forEach((g, i) => {
+    const data = g._summaries[0].series
+    const yLabel = g._group.level_2
+    const data2015 = processed.filter(
+      g => g._group.year === '2015' && g._group.level_2 === yLabel
+    )[0]._summaries[0].series
+
+    const chart = new DatagovsgHorizontalBar({
+      data,
+      yLabel,
+      xLabel: '1985',
+      sorted: false
+    })
+
+    const chart2015 = new DatagovsgHorizontalBar({
+      data: data2015,
+      yLabel,
+      xLabel: '2015',
+      sorted: false
+    })
+
+    chart.xAxis.showEndTickLabels(false)
+    chart2015.xAxis.showEndTickLabels(false)
+    chart.layout.add(chart2015.layout.componentAt(0, 2), 0, 3)
+    chart.layout.add(chart2015.layout.componentAt(1, 2), 1, 3)
+    chart.layout.add(chart2015.layout.componentAt(2, 2), 2, 3)
+    chart.layout.columnPadding(15)
+
+    chart.mount(document.querySelector('#groom-age-group .chart.panel-' + i))
   })
 }

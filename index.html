@@ -44,26 +44,31 @@
         }
       }
 
-      #age-group .chart-container {
+      #bride-age-group .chart-container,
+      #groom-age-group .chart-container {
         height: auto;
         width: 600px;
         box-sizing: border-box;
       }
 
-      #age-group .chart {
+      #bride-age-group .chart,
+      #groom-age-group .chart {
         height: 200px;
       }
 
-      #age-group .y-axis line {
+      #bride-age-group .y-axis line,
+      #groom-age-group .y-axis line {
         display: none;
       }
 
-      #age-group .y-axis .tick-label:nth-child(2) text {
+      #bride-age-group .y-axis .tick-label:nth-child(2) text,
+      #groom-age-group .y-axis .tick-label:nth-child(2) text {
         font-weight: 500;
         fill: black;
       }
 
-      #age-group .axis-label text {
+      #bride-age-group .axis-label text,
+      #groom-age-group .axis-label text {
         font-weight: 700;
         fill: black;
       }
@@ -82,7 +87,7 @@
       </div>
     </section>
 
-    <section>
+    <!-- <section>
       <h2 class="chart-title">Number of Marriages by Bride's Age Group</h2>
       <div class="chart-container">
         <iframe width="100%" height="100%" src="https://data.gov.sg/dataset/marriages-under-the-women-s-charter-by-age-group-of-brides-annual/resource/7fdff042-86ed-4e87-a0b8-f133e2d3e098/view/941b8e47-ed9c-4b1e-a00a-4b158622189b" frameBorder="0"></iframe>
@@ -93,10 +98,10 @@
       <div class="chart-container">
         <iframe width="100%" height="100%" src="https://data.gov.sg/dataset/marriages-under-the-women-s-charter-by-educational-qualification-of-brides-and-grooms-annual/resource/01b30965-fd49-41d5-9354-3085350ff6a6/view/4a72d292-a977-4d9e-8c19-0c7ac0066013" frameBorder="0"></iframe>
       </div>
-    </section>
+    </section> -->
 
-    <section id="age-group">
-      <h2 class="chart-title">No. of Marriages by Age Group of Brides and Grooms</h2>
+    <section id="bride-age-group">
+      <h2 class="chart-title">No. of Marriages by Age Group of Brides and Grooms<br>(Bride's Perspective)</h2>
       <div class="chart-container">
         <svg class="chart panel-0" height="100%" width="100%"></svg>
         <svg class="chart panel-1" height="100%" width="100%"></svg>
@@ -104,12 +109,21 @@
       </div>
     </section>
 
-    <section id="income">
+    <section id="groom-age-group">
+      <h2 class="chart-title">No. of Marriages by Age Group of Brides and Grooms<br>(Groom's Perspective)</h2>
+      <div class="chart-container">
+        <svg class="chart panel-0" height="100%" width="100%"></svg>
+        <svg class="chart panel-1" height="100%" width="100%"></svg>
+        <svg class="chart panel-2" height="100%" width="100%"></svg>
+      </div>
+    </section>
+
+    <!-- <section id="income">
       <h2 class="chart-title">Median Gross Monthly Income From Work 2016</h2>
       <div class="chart-container">
         <svg class="chart" height="100%" width="100%"></svg>
       </div>
-    </section>
+    </section> -->
 
     <script src="lib/d3.min.js"></script>
     <script src="lib/plottable.min.js"></script>
