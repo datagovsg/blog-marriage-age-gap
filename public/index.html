@@ -28,6 +28,7 @@
         width: 800px;
         max-width: 90%;
         height: 500px;
+        position: relative;
       }
 
       .chart-controls label, .chart-controls input {
@@ -72,12 +73,22 @@
         font-weight: 700;
         fill: black;
       }
+
+      .year-text {
+        display: block;
+        position: absolute;
+        top: 14px;
+        right: 30px;
+        font-size: 1.5em;
+        font-weight: 500;
+      }
     </style>
   </head>
   <body>
     <section id="age-difference">
-      <h2 class="chart-title">Groom vs Bride Age Difference (<span class="year-text">1985</span>)</h2>
+      <h2 class="chart-title">Groom vs Bride Age Difference</h2>
       <div class="chart-container">
+        <span class="year-text">1985</span>
         <svg class="chart" height="100%" width="100%"></svg>
       </div>
       <div class="chart-controls">
@@ -106,6 +117,7 @@
         <svg class="chart panel-0" height="100%" width="100%"></svg>
         <svg class="chart panel-1" height="100%" width="100%"></svg>
         <svg class="chart panel-2" height="100%" width="100%"></svg>
+        <svg class="chart panel-3" height="100%" width="100%"></svg>
       </div>
     </section>
 
@@ -115,6 +127,7 @@
         <svg class="chart panel-0" height="100%" width="100%"></svg>
         <svg class="chart panel-1" height="100%" width="100%"></svg>
         <svg class="chart panel-2" height="100%" width="100%"></svg>
+        <svg class="chart panel-3" height="100%" width="100%"></svg>
       </div>
     </section>
 

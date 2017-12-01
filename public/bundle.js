@@ -82,7 +82,11 @@ const brideFilters = [
   {'bride': 'Brides Aged 30-34 Years', 'groom': 'Grooms Aged 25-29 Years'},
   {'bride': 'Brides Aged 30-34 Years', 'groom': 'Grooms Aged 30-34 Years'},
   {'bride': 'Brides Aged 30-34 Years', 'groom': 'Grooms Aged 35-39 Years'},
-  {'bride': 'Brides Aged 30-34 Years', 'groom': 'Grooms Aged 40-44 Years'}
+  {'bride': 'Brides Aged 30-34 Years', 'groom': 'Grooms Aged 40-44 Years'},
+  {'bride': 'Brides Aged 35-39 Years', 'groom': 'Grooms Aged 30-34 Years'},
+  {'bride': 'Brides Aged 35-39 Years', 'groom': 'Grooms Aged 35-39 Years'},
+  {'bride': 'Brides Aged 35-39 Years', 'groom': 'Grooms Aged 40-44 Years'},
+  {'bride': 'Brides Aged 35-39 Years', 'groom': 'Grooms Aged 45-49 Years'}
 ]
 
 const groomFilters = [
@@ -97,7 +101,11 @@ const groomFilters = [
   {'groom': 'Grooms Aged 30-34 Years', 'bride': 'Brides Aged 25-29 Years'},
   {'groom': 'Grooms Aged 30-34 Years', 'bride': 'Brides Aged 30-34 Years'},
   {'groom': 'Grooms Aged 30-34 Years', 'bride': 'Brides Aged 35-39 Years'},
-  {'groom': 'Grooms Aged 30-34 Years', 'bride': 'Brides Aged 40-44 Years'}
+  {'groom': 'Grooms Aged 30-34 Years', 'bride': 'Brides Aged 40-44 Years'},
+  {'groom': 'Grooms Aged 35-39 Years', 'bride': 'Brides Aged 30-34 Years'},
+  {'groom': 'Grooms Aged 35-39 Years', 'bride': 'Brides Aged 35-39 Years'},
+  {'groom': 'Grooms Aged 35-39 Years', 'bride': 'Brides Aged 40-44 Years'},
+  {'groom': 'Grooms Aged 35-39 Years', 'bride': 'Brides Aged 45-49 Years'}
 ]
 
 Papa.parse('by-age-group.csv', {
@@ -165,7 +173,7 @@ function plotAgeDifference (data) {
 
   yearControl.addEventListener('change', event => {
     updateChart(yearControl.value)
-    yearText.textContent = yearControl.value
+    yearText.textContent = 'Year ' + yearControl.value
   })
 
   const playControl = document.querySelector('input[name="play"]')
@@ -186,18 +194,18 @@ function plotAgeDifference (data) {
   function initializeTimeLapse () {
     yearControl.value = '1985'
     updateChart(yearControl.value)
-    yearText.textContent = yearControl.value
+    yearText.textContent = 'Year ' + yearControl.value
     intervalId = setInterval(() => {
       const current = +yearControl.value
       if (current < 2015) {
-        yearControl.value = (current + 1).toString()
+        yearControl.value = (current + 2).toString()
         updateChart(yearControl.value)
-        yearText.textContent = yearControl.value
+        yearText.textContent = 'Year ' + yearControl.value
       } else {
         clearInterval(intervalId)
         timeoutId = setTimeout(initializeTimeLapse, 2000)
       }
-    }, 700)
+    }, 400)
   }
 
   initializeTimeLapse()
